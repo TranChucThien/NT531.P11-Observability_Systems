@@ -1,0 +1,25 @@
+{
+  "name": "comments",
+  "version": "1.0.0",
+  "description": "Comments Service",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "nodemon src/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chai": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongodb": "^6.5.0",
+    "mongoose": "^8.3.2"
+  },
+  "devDependencies": {
+    "mocha": "^10.4.0",
+    "nodemon": "^3.1.0",
+    "supertest": "^7.0.0"
+  }
+}
