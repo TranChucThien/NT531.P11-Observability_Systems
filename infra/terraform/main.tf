@@ -9,16 +9,17 @@ terraform {
 # Configure the AWS Provider
 provider "aws" {
   region = "us-east-1"
-  access_key = var.access_key
-  secret_key = var.secret_key
-  token = var.token
+  # access_key = var.access_key
+  # secret_key = var.secret_key
+  # token = var.token
+  shared_credentials_files = [ "C:/Users/chuct/.aws/credentials" ]
 }
 
 locals {
   prod_cluster_name = "production-environment"
   prod_node_group_name = "production-nodes"
   vpc_id = var.vpc_id
-  subnet_ids = ["subnet-09f008b76583d8cae", "subnet-0221a26c2daacbdd7", "subnet-0db67585071973542", "subnet-0352a68cb4f1a9b3b"]
+  subnet_ids = ["subnet-01dcf3742099cfaeb", "subnet-03609e1568ecf1b2a", "subnet-0681c5f38adecd2da"]
   iam_role_arn = var.iam_role_arn
 }
 
