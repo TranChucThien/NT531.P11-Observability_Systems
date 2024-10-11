@@ -2,3 +2,5 @@
 **/.terraform.lock.hcl
 **/node_modules/
 **/.env
+**/terraform.tfstate
+**/terraform.tfstate.backup
