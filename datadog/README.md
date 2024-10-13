@@ -62,6 +62,6 @@ Connect to EKS cluster
 
 ```bash
 #aws eks update-kubeconfig --region us-east-1 --name my-cluster
-aws eks update-kubeconfig --region ap-southeast-1 --name eks-prod
+eks update-kubeconfig --region us-east-1 --name production-environment
 kubectl get nodes -o wide
 ```
