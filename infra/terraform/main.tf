@@ -12,15 +12,14 @@ provider "aws" {
   # access_key = var.access_key
   # secret_key = var.secret_key
   # token = var.token
-  shared_credentials_files = [ "C:/Users/chuct/.aws/credentials" ]
-  shared_credentials_files = [ "C:/Users/Quan/.aws/credentials" ]
+  shared_credentials_files = [ var.credentials_file ]
 }
 
 locals {
   prod_cluster_name = "production-environment"
   prod_node_group_name = "production-nodes"
   vpc_id = var.vpc_id
-  subnet_ids = ["subnet-01dcf3742099cfaeb", "subnet-03609e1568ecf1b2a", "subnet-0681c5f38adecd2da"]
+  subnet_ids = ["subnet-09f008b76583d8cae", "subnet-0221a26c2daacbdd7", "subnet-0db67585071973542"]
   iam_role_arn = var.iam_role_arn
 }
 
@@ -45,9 +44,9 @@ resource "aws_eks_node_group" "prod_node_group" {
   subnet_ids       = local.subnet_ids
 
   scaling_config {
-    desired_size = 3
+    desired_size = 4
     max_size     = 4
-    min_size     = 3
+    min_size     = 4
   }
 
   update_config {
@@ -85,4 +84,17 @@ resource "aws_eks_addon" "eks-pod-identity-agent" {
   addon_name = "eks-pod-identity-agent"
   addon_version = "v1.2.0-eksbuild.1"
   depends_on = [ aws_eks_cluster.production_cluster ]
+}
+
+# EC2 for Splunk Server
+resource "aws_instance" "ec2_splunk" {
+  ami = "ami-0e86e20dae9224db8"
+  instance_type = "t2.small"
+  key_name = "public-ec2-key"
+
+  subnet_id = "subnet-09f008b76583d8cae"
+  vpc_security_group_ids = [ "sg-0d681723d5517857d" ]
+  tags = {
+    Name = "Splunk Server"
+  }
 }
