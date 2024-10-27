@@ -7,7 +7,7 @@ wget -O splunk-9.3.1-0b8d769cb912-Linux-x86_64.tgz "https://download.splunk.com/
 
 2. Extract Splunk to /opt/
 ```
-tar xvzf splunk-9.3.1-0b8d769cb912-Linux-x86_64.tgz -C /opt
+sudo tar xvzf splunk-9.3.1-0b8d769cb912-Linux-x86_64.tgz -C /opt
 ```
 
 3. Set $SPLUNK_HOME
@@ -17,12 +17,17 @@ export SPLUNK_HOME=/opt/splunk
 
 4. Ensure all files and directories are owned by current user (Replace ubuntu with username)
 ```
-chown -RP ubuntu /opt/splunk
+sudo chown -RP ubuntu /opt/splunk
 ```
 
 5. Start Splunk up for the first time, this will generate initial config files (Replace ubuntu with username)
 ```
 /opt/splunk/bin/splunk start --accept-license -user ubuntu
+```
+
+6. If Splunk server fails to start, run this command
+```
+/opt/splunk/bin/splunk start --accept-license
 ```
 
 ## Configure Splunk as Vector's Sink
