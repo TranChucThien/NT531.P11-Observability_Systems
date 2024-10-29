@@ -5,9 +5,19 @@ metadata:
 spec:
   global:
     clusterName: production-environment
-    
     site: us5.datadoghq.com
     credentials:
       apiSecret:
         secretName: datadog-secret
         keyName: api-key
+
+  features:
+    apm:
+      enabled: true
+    eventCollection:
+      collectKubernetesEvents: true
+    npm:
+      enabled: true
+    logCollection:
+      enabled: true
+      containerCollectAll: true

@@ -1,10 +1,21 @@
-## Configuration (recommended)
+## Configuration (Operator)
 ```
 helm repo add datadog https://helm.datadoghq.com
 
-helm install datadog-operator datadog/datadog-operator
+kubectl create ns datadog
 
-kubectl create secret generic datadog-secret --from-literal api-key=<DATADOG_API_KEY>
+helm install datadog-operator datadog/datadog-operator -n datadog
 
-kubectl apply -f datadog-agent.yaml
+kubectl create secret generic datadog-secret --from-literal api-key=dc3e5a866e866984f2b22320d8532823 -n datadog
+
+kubectl apply -f datadog-agent.yaml -n datadog
+```
+
+## Install Location worker
+```
+helm repo add datadog https://helm.datadoghq.com
+
+helm repo update
+
+helm install location-worker datadog/synthetics-private-location --set-file configFile=location-worker.json -n app
 ```
