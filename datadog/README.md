@@ -6,7 +6,7 @@ kubectl create ns datadog
 
 helm install datadog-operator datadog/datadog-operator -n datadog
 
-kubectl create secret generic datadog-secret --from-literal api-key=dc3e5a866e866984f2b22320d8532823 -n datadog
+kubectl create secret generic datadog-secret --from-literal api-key=<> -n datadog
 
 kubectl apply -f datadog-agent.yaml -n datadog
 ```
@@ -17,5 +17,5 @@ helm repo add datadog https://helm.datadoghq.com
 
 helm repo update
 
-helm install location-worker datadog/synthetics-private-location --set-file configFile=location-worker.json -n app
+helm install location-worker datadog/synthetics-private-location --set-file configFile=synthetic-test/location-worker.json -n app
 ```
