@@ -17,7 +17,6 @@ pipeline {
                 '''
             }
         }
-
     
         stage('Build front-end application image') {
             steps {
@@ -27,8 +26,6 @@ pipeline {
                 '''
             }
         }
-
-       
         
         stage('Push images to Docker Hub') {
             steps {
@@ -38,15 +35,12 @@ pipeline {
                 }
             }
         }
-        
-        
-
+    }
 
     post {
         always {
             echo 'Cleaning...'
             sh 'docker logout'
-            
         }
         success {
             echo 'Deployment to Dev Environment is successful!'
@@ -79,5 +73,4 @@ pipeline {
                      body: "Pipeline state changed."
         }
     }
-
 }
