@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        timestamp = "${new Date().format('yyyyMMddHHmmss')}" // Define timestamp variable
+    }
+
     stages {
         stage('Authenticate with Docker Hub') {
             steps {
@@ -13,25 +17,16 @@ pipeline {
         stage('Build image') {
             steps {
                 sh '''
-                   docker build ./api_gateway --file ./api_gateway/Dockerfile --tag my-image-name:$(date +%s)
+                   docker build ./api_gateway --file ./api_gateway/Dockerfile --tag chucthien03/my-image-name:${timestamp}
                 '''
             }
         }
-    
-        stage('Build front-end application image') {
-            steps {
-                sh '''
-                    cp class-management-fe/Dockerfile .
-                    docker compose -f docker-compose.yml build class-mangement-fe
-                '''
-            }
-        }
-        
+
         stage('Push images to Docker Hub') {
             steps {
                 withDockerRegistry(credentialsId: 'dockerhub-account', url: 'https://index.docker.io/v1/') {
                     echo 'Pushing images to Docker Hub...'
-                    sh 'docker compose push'
+                    sh "docker push chucthien03/my-image-name:${timestamp}"
                 }
             }
         }
