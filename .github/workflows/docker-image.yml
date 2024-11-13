@@ -16,4 +16,4 @@ jobs:
     - uses: actions/checkout@v4
     - name: Build the Docker image
       run: ls #docker build . --file Dockerfile --tag my-image-name:$(date +%s)
-      working-directory: ./Lab_1
+      working-directory: ./api_gateway
