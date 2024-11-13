@@ -17,14 +17,15 @@ pipeline {
         stage('Build image') {
             steps {
                 sh '''
-                   docker build ./api_gateway --file ./api_gateway/Dockerfile --tag chucthien03/gateway-service:${timestamp}
-                   docker build ./auth_service --file ./auth_service /Dockerfile --tag chucthien03/auth-microservice:${timestamp}
-                   docker build ./comment_service --file ./comment_service/Dockerfile --tag chucthien03/gateway-service:${timestamp}
-                   docker build ./frontend --file ./front/Dockerfile --tag chucthien03/mern-stack-frontend:${timestamp}
-                   docker build ./post_service --file ./post_service/Dockerfile --tag chucthien03/post-microservice:${timestamp}
+                docker build --no-cache ./api_gateway --file ./api_gateway/Dockerfile --tag chucthien03/gateway-service:${timestamp}
+                docker build --no-cache ./auth_service --file ./auth_service/Dockerfile --tag chucthien03/auth-microservice:${timestamp}
+                docker build --no-cache ./comment_service --file ./comment_service/Dockerfile --tag chucthien03/comment-service:${timestamp}
+                docker build --no-cache ./frontend --file ./frontend/Dockerfile --tag chucthien03/mern-stack-frontend:${timestamp}
+                docker build --no-cache ./post_service --file ./post_service/Dockerfile --tag chucthien03/post-microservice:${timestamp}
                 '''
             }
-        }
+}
+
         stage('Push images to Docker Hub') {
             steps {
                 withDockerRegistry(credentialsId: 'dockerhub-account', url: 'https://index.docker.io/v1/') {
