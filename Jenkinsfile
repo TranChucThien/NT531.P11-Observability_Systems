@@ -13,7 +13,7 @@ pipeline {
         stage('Build image') {
             steps {
                 sh '''
-                   docker build ./api_gateway --file Dockerfile --tag my-image-name:$(date +%s)
+                   docker build ./api_gateway --file ./api_gateway/Dockerfile --tag my-image-name:$(date +%s)
                 '''
             }
         }
