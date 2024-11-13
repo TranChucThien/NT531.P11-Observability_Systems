@@ -14,22 +14,22 @@ pipeline {
             }
         }
 
-        stage('Build image') {
-            steps {
+    stage('Push images to Docker Hub') {
+        steps {
+            withDockerRegistry(credentialsId: 'dockerhub-account', url: 'https://index.docker.io/v1/') {
+                echo 'Pushing images to Docker Hub...'
                 sh '''
-                   docker build ./api_gateway --file ./api_gateway/Dockerfile --tag chucthien03/my-image-name:${timestamp}
+                    docker push chucthien03/gateway-service:${timestamp}
+                    docker push chucthien03/auth-microservice:${timestamp}
+                    docker push chucthien03/comment-service:${timestamp}
+                    docker push chucthien03/mern-stack-frontend:${timestamp}
+                    docker push chucthien03/post-microservice:${timestamp}
                 '''
             }
         }
+    }
 
-        stage('Push images to Docker Hub') {
-            steps {
-                withDockerRegistry(credentialsId: 'dockerhub-account', url: 'https://index.docker.io/v1/') {
-                    echo 'Pushing images to Docker Hub...'
-                    sh "docker push chucthien03/my-image-name:${timestamp}"
-                }
-            }
-        }
+        
     }
 
     post {
