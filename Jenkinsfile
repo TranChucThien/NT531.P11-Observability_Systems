@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        timestamp = "${new Date().format('yyyyMMddHHmmss')}" // Define timestamp variable
+        timestamp = "${new Date().format('yyyyMMddHHmmss')}" 
     }
 
     stages {
@@ -26,6 +26,28 @@ pipeline {
             }
 }
 
+
+
+        stage('Scan images with Trivy') {
+            steps {
+                sh '''
+                    # Ensure the file exists and is writable
+                    touch ${WORKSPACE}/trivy-report.txt
+                    chmod +w ${WORKSPACE}/trivy-report.txt
+
+                    # Remove the file if it exists
+                    if [ -f ${WORKSPACE}/trivy-report.txt ]; then
+                        rm ${WORKSPACE}/trivy-report.txt
+                    fi
+                    trivy image --severity HIGH,CRITICAL chucthien03/gateway-service:${timestamp} >> ${WORKSPACE}/trivy-report.txt
+                    trivy image --severity HIGH,CRITICAL chucthien03/auth-microservice:${timestamp} >> ${WORKSPACE}/trivy-report.txt
+                    trivy image --severity HIGH,CRITICAL chucthien03/comment-service:${timestamp} >> ${WORKSPACE}/trivy-report.txt
+                    trivy image --severity HIGH,CRITICAL chucthien03/mern-stack-frontend:${timestamp} >> ${WORKSPACE}/trivy-report.txt
+                    trivy image --severity HIGH,CRITICAL chucthien03/post-microservice:${timestamp} >> ${WORKSPACE}/trivy-report.txt
+                '''
+            }
+        }
+
         stage('Push images to Docker Hub') {
             steps {
                 withDockerRegistry(credentialsId: 'dockerhub-account', url: 'https://index.docker.io/v1/') {
@@ -39,7 +61,7 @@ pipeline {
                     '''
                 }
             }
-    }
+        }
 
     
     }
