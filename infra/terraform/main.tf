@@ -87,4 +87,4 @@ resource "aws_eks_addon" "eks-pod-identity-agent" {
 }
 
 
-}
+
