@@ -71,6 +71,7 @@ pipeline {
             steps {
                 echo 'Updating Kubernetes deployments with new image versions...'
                 sh '''
+                    whoami
                     kubectl set image deployment/gateway-deployment gateway-c=chucthien03/gateway-service:${timestamp}
                    # kubectl set image deployment/auth-microservice-deployment auth-microservice-c=chucthien03/auth-microservice:${timestamp}
                     #kubectl set image deployment/comment-microservice-deployment comment-microservice-c=chucthien03/comment-service:${timestamp}
