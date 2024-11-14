@@ -108,7 +108,7 @@ pipeline {
             emailext from: 'tranchucthienmt@gmail.com',
                      to: 'tranchucthienmt@gmail.com',
                      subject: "Pipeline Success: ${currentBuild.fullDisplayName}",
-                     body: "Pipeline completed successfully. Find attached Trivy report.",
+                     body: "Pipeline completed successfully. Find attached Trivy report."
                      
         }
         failure {
@@ -116,7 +116,7 @@ pipeline {
             emailext from: 'tranchucthienmt@gmail.com',
                      to: 'tranchucthienmt@gmail.com',
                      subject: "Pipeline Failure: ${currentBuild.fullDisplayName}",
-                     body: "Pipeline failed. Please check the logs for details.",
+                     body: "Pipeline failed. Please check the logs for details."
                      
         }
         unstable {
