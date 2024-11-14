@@ -53,15 +53,32 @@ pipeline {
             }
         }
 
+         stage('Check K8s Previous Images') {
+            steps {
+                echo 'Updating Kubernetes deployments with new image versions...'
+                sh '''
+                   kubectl get deployments -o custom-columns="DEPLOYMENT NAME:.metadata.name,IMAGE:.spec.template.spec.containers[*].image"
+                    
+
+                '''
+            }
+        }
+
+        
+
+
         stage('Update K8s Deployments') {
             steps {
                 echo 'Updating Kubernetes deployments with new image versions...'
                 sh '''
-                    kubectl set image deployment/gateway-deployment gateway-container=chucthien03/gateway-service:${timestamp}
-                    kubectl set image deployment/auth-microservice-deployment auth-container=chucthien03/auth-microservice:${timestamp}
-                    kubectl set image deployment/comment-microservice-deployment comment-container=chucthien03/comment-service:${timestamp}
-                    # kubectl set image deployment/frontend-deployment frontend-container=chucthien03/mern-stack-frontend:${timestamp}
-                    kubectl set image deployment/post-microservice-deployment post-container=chucthien03/post-microservice:${timestamp}
+                    kubectl set image deployment/gateway-deployment gateway-c=chucthien03/gateway-service:${timestamp}
+                   # kubectl set image deployment/auth-microservice-deployment auth-microservice-c=chucthien03/auth-microservice:${timestamp}
+                    #kubectl set image deployment/comment-microservice-deployment comment-microservice-c=chucthien03/comment-service:${timestamp}
+                    kubectl set image deployment/frontend-deployment frontend-c=chucthien03/mern-stack-frontend:${timestamp}
+                    kubectl set image deployment/post-microservice-deployment post-microservice-c=chucthien03/post-microservice:${timestamp}
+                    
+                    
+
                 '''
             }
         }
