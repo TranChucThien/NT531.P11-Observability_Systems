@@ -1,0 +1,46 @@
+name: Docker Image CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+   # - name: Build the Docker image
+    #  run: docker build . --file Dockerfile --tag my-image-name
+     # working-directory: ./api_gateway
+    - name: Pull images
+      run: |
+        docker pull tonyq2k3/auth-microservice:2.0
+        docker pull tonyq2k3/comment-microservice:2.0
+        docker pull tonyq2k3/mern-stack-frontend:release-37309974cd93993f654d3258c34b0d0da40ef6a6
+        docker pull tonyq2k3/gateway-service:2.0
+        docker pull tonyq2k3/post-microservice:2.0
+    
+    - name: Cache Trivy DB
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/trivy  # Cache path for Trivy DB
+        key: ${{ runner.os }}-trivy-db
+        restore-keys: |
+          ${{ runner.os }}-trivy-db
+
+    - name: Install Trivy
+      run: |
+        sudo apt-get install wget apt-transport-https gnupg lsb-release
+        wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+        echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
+        sudo apt-get update
+        sudo apt-get install trivy
+
+    - name: Scan image by Trivy
+      run: |
+        trivy image tonyq2k3/auth-microservice:2.0  --severity CRITICAL --exit-code 1
+        trivy image tonyq2k3/comment-microservice:2.0  --severity CRITICAL --exit-code 1
+        trivy image tonyq2k3/mern-stack-frontend:release-37309974cd93993f654d3258c34b0d0da40ef6a6  --severity CRITICAL --exit-code 1
+        trivy image tonyq2k3/gateway-service:2.0  --severity CRITICAL --exit-code 1
+        trivy image tonyq2k3/post-microservice:2.0  --severity CRITICAL --exit-code 1
