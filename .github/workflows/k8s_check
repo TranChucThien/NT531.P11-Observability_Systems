@@ -1,0 +1,61 @@
+name: K8s Deployment
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check_k8s:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: us-east-1
+          
+
+
+
+      - name: Connect to EKS cluster
+        run: |
+          aws eks update-kubeconfig --region us-east-1 --name production-environment
+          kubectl get nodes -o wide
+        working-directory: ./infra/
+
+      - name: K8s check
+        run: |
+          # List all deployments and check their status
+          echo "Checking deployment status..."
+          kubectl get deployments -o wide
+
+          # Check if each deployment has successfully rolled out
+          kubectl rollout status deployment/auth-service-deploy
+          kubectl rollout status deployment/comment-service-deploy
+          kubectl rollout status deployment/frontend-deploy
+          kubectl rollout status deployment/gateway-deploy
+          kubectl rollout status deployment/post-service-deploy
+
+          # List all pods and check their status
+          echo "Listing all pods and their statuses..."
+          kubectl get pods -o wide
+
+          # Optionally check for pods that are not in the Running phase
+          echo "Checking for any pods that are not running..."
+          kubectl get pods --field-selector=status.phase!=Running
+          
+          # Exit with an error if any pods are not running
+          if [ $(kubectl get pods --field-selector=status.phase!=Running --no-headers | wc -l) -gt 0 ]; then
+            echo "Some pods are not running as expected."
+            exit 1
+          else
+            echo "All pods are running as expected."
+          fi
+
+
+          
