@@ -49,7 +49,7 @@ pipeline {
         stage('Build Frontend Image') {
             steps {
                 sh '''
-                    docker build ./frontend --file ./frontend/Dockerfile --tag chucthien03/mern-stack-frontend:${timestamp}
+                    # docker build ./frontend --file ./frontend/Dockerfile --tag chucthien03/mern-stack-frontend:${timestamp}
                 '''
             }
         }
@@ -59,19 +59,12 @@ pipeline {
         stage('Scan Images with Trivy') {
             steps {
                 sh '''
-                    # Ensure the file exists and is writable
-                    touch ${WORKSPACE}/trivy-report.txt
-                    chmod +w ${WORKSPACE}/trivy-report.txt
-
-                    # Remove the file if it exists
-                    if [ -f ${WORKSPACE}/trivy-report.txt ]; then
-                        rm ${WORKSPACE}/trivy-report.txt
-                    fi
-                    trivy image --severity HIGH,CRITICAL chucthien03/gateway-service:${timestamp} >> ${WORKSPACE}/trivy-report.txt
-                    trivy image --severity HIGH,CRITICAL chucthien03/auth-microservice:${timestamp} >> ${WORKSPACE}/trivy-report.txt
-                    trivy image --severity HIGH,CRITICAL chucthien03/comment-service:${timestamp} >> ${WORKSPACE}/trivy-report.txt
-                    trivy image --severity HIGH,CRITICAL chucthien03/mern-stack-frontend:${timestamp} >> ${WORKSPACE}/trivy-report.txt
-                    trivy image --severity HIGH,CRITICAL chucthien03/post-microservice:${timestamp} >> ${WORKSPACE}/trivy-report.txt
+                    
+                    trivy image --severity CRITICAL chucthien03/gateway-service:${timestamp} --exit-code 1
+                    trivy image --severity CRITICAL chucthien03/auth-microservice:${timestamp} --exit-code 1
+                    trivy image --severity CRITICAL chucthien03/comment-service:${timestamp} --exit-code 1
+                    #trivy image --severity CRITICAL chucthien03/mern-stack-frontend:${timestamp} --exit-code 1
+                    trivy image --severity CRITICAL chucthien03/post-microservice:${timestamp} --exit-code 1
                 '''
             }
         }
@@ -116,7 +109,7 @@ pipeline {
                      to: 'tranchucthienmt@gmail.com',
                      subject: "Pipeline Success: ${currentBuild.fullDisplayName}",
                      body: "Pipeline completed successfully. Find attached Trivy report.",
-                     attachmentsPattern: 'trivy-report.txt'
+                     
         }
         failure {
             echo 'Deployment to Dev Environment failed!'
@@ -124,7 +117,7 @@ pipeline {
                      to: 'tranchucthienmt@gmail.com',
                      subject: "Pipeline Failure: ${currentBuild.fullDisplayName}",
                      body: "Pipeline failed. Please check the logs for details.",
-                     attachmentsPattern: 'trivy-report.txt'
+                     
         }
         unstable {
             echo 'Deployment to Dev Environment is unstable!'
