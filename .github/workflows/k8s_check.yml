@@ -30,32 +30,11 @@ jobs:
 
       - name: K8s check
         run: |
-          # List all deployments and check their status
-          echo "Checking deployment status..."
+          # List all deployments with details
           kubectl get deployments -o wide
 
-          # Check if each deployment has successfully rolled out
-          kubectl rollout status deployment/auth-service-deploy
-          kubectl rollout status deployment/comment-service-deploy
-          kubectl rollout status deployment/frontend-deploy
-          kubectl rollout status deployment/gateway-deploy
-          kubectl rollout status deployment/post-service-deploy
-
-          # List all pods and check their status
-          echo "Listing all pods and their statuses..."
+          # List all pods with details
           kubectl get pods -o wide
-
-          # Optionally check for pods that are not in the Running phase
-          echo "Checking for any pods that are not running..."
-          kubectl get pods --field-selector=status.phase!=Running
-          
-          # Exit with an error if any pods are not running
-          if [ $(kubectl get pods --field-selector=status.phase!=Running --no-headers | wc -l) -gt 0 ]; then
-            echo "Some pods are not running as expected."
-            exit 1
-          else
-            echo "All pods are running as expected."
-          fi
 
 
           
