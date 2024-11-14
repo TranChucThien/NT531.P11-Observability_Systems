@@ -39,8 +39,8 @@ jobs:
 
     - name: Scan image by Trivy
       run: |
-        trivy image tonyq2k3/auth-microservice:2.0  --severity CRITICAL
-        trivy image tonyq2k3/comment-microservice:2.0  --severity CRITICAL
-        trivy image tonyq2k3/mern-stack-frontend:release-37309974cd93993f654d3258c34b0d0da40ef6a6  --severity CRITICAL
-        trivy image tonyq2k3/gateway-service:2.0  --severity CRITICAL
-        trivy image tonyq2k3/post-microservice:2.0  --severity CRITICAL
+        trivy image tonyq2k3/auth-microservice:2.0  --severity CRITICAL --exit-code 1
+        trivy image tonyq2k3/comment-microservice:2.0  --severity CRITICAL --exit-code 1
+        trivy image tonyq2k3/mern-stack-frontend:release-37309974cd93993f654d3258c34b0d0da40ef6a6  --severity CRITICAL --exit-code 1
+        trivy image tonyq2k3/gateway-service:2.0  --severity CRITICAL --exit-code 1
+        trivy image tonyq2k3/post-microservice:2.0  --severity CRITICAL --exit-code 1
