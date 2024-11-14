@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy_terraform:
+  deploy_k8s:
     runs-on: ubuntu-latest
 
     steps:
