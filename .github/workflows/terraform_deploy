@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy:
+  deploy terraform:
     runs-on: ubuntu-latest
 
     steps:
@@ -37,3 +37,8 @@ jobs:
           terraform plan
           terraform apply --auto-approve
         working-directory: ./infra/terraform
+
+
+
+ 
+  
