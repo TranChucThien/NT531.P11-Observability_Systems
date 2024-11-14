@@ -54,7 +54,7 @@ pipeline {
             }
         }
 
-         stage('Check K8s Previous Images') {
+         stage('Check K8s Previous Images Version') {
             steps {
                 echo 'Updating Kubernetes deployments with new image versions...'
                 sh '''
@@ -79,6 +79,17 @@ pipeline {
                     #kubectl set image deployment/frontend-deployment frontend-c=chucthien03/mern-stack-frontend:${timestamp}
                     kubectl set image deployment/post-microservice-deployment post-microservice-c=chucthien03/post-microservice:${timestamp}
                     
+                    
+
+                '''
+            }
+        }
+
+        stage('Check K8s Current Images Version') {
+            steps {
+                echo 'Updating Kubernetes deployments with new image versions...'
+                sh '''
+                   kubectl get deployments -o custom-columns="DEPLOYMENT NAME:.metadata.name,IMAGE:.spec.template.spec.containers[*].image"
                     
 
                 '''
