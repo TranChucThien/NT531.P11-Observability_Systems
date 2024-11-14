@@ -10,9 +10,9 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-   # - name: Build the Docker image
-    #  run: docker build . --file Dockerfile --tag my-image-name
-     # working-directory: ./api_gateway
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag my-image-name
+      working-directory: ./frontend
     - name: Pull images
       run: |
         docker pull tonyq2k3/auth-microservice:2.0
