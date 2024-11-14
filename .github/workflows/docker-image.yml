@@ -14,6 +14,14 @@ jobs:
       run: docker build . --file Dockerfile --tag my-image-name
       working-directory: ./api_gateway
 
+    - name: Cache Trivy DB
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/trivy  # Cache path for Trivy DB
+        key: ${{ runner.os }}-trivy-db
+        restore-keys: |
+          ${{ runner.os }}-trivy-db
+
     - name: Install Trivy
       run: |
         sudo apt-get install wget apt-transport-https gnupg lsb-release
@@ -22,7 +30,6 @@ jobs:
         sudo apt-get update
         sudo apt-get install trivy
 
-
     - name: Scan image by Trivy
       run: |
-        trivy image my-image-name  --severity HIGH,CRITICAL
+        trivy image my-image-name --severity HIGH,CRITICAL
