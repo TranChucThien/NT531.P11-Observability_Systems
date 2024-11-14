@@ -86,15 +86,5 @@ resource "aws_eks_addon" "eks-pod-identity-agent" {
   depends_on = [ aws_eks_cluster.production_cluster ]
 }
 
-# EC2 for Splunk Server
-resource "aws_instance" "ec2_splunk" {
-  ami = "ami-0e86e20dae9224db8"
-  instance_type = "t2.small"
-  key_name = "public-ec2-key"
 
-  subnet_id = "subnet-03609e1568ecf1b2a"
-  vpc_security_group_ids = [ "sg-0d681723d5517857d" ]
-  tags = {
-    Name = "Splunk Server"
-  }
 }
