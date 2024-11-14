@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        timestamp = "${new Date().format('yyyyMMddHHmmss')}" 
+        timestamp = "${new Date().format('yyyyMMddHHmmss')}"
     }
 
     stages {
@@ -26,16 +26,13 @@ pipeline {
             }
         }
 
-        
-
         stage('Scan Images with Trivy') {
             steps {
                 sh '''
-                    
                     trivy image --severity CRITICAL chucthien03/gateway-service:${timestamp} --exit-code 1
                     trivy image --severity CRITICAL chucthien03/auth-microservice:${timestamp} --exit-code 1
                     trivy image --severity CRITICAL chucthien03/comment-service:${timestamp} --exit-code 1
-                    #trivy image --severity CRITICAL chucthien03/mern-stack-frontend:${timestamp} --exit-code 1
+                    # trivy image --severity CRITICAL chucthien03/mern-stack-frontend:${timestamp} --exit-code 1
                     trivy image --severity CRITICAL chucthien03/post-microservice:${timestamp} --exit-code 1
                 '''
             }
@@ -49,10 +46,23 @@ pipeline {
                         docker push chucthien03/gateway-service:${timestamp}
                         docker push chucthien03/auth-microservice:${timestamp}
                         docker push chucthien03/comment-service:${timestamp}
-                        #docker push chucthien03/mern-stack-frontend:${timestamp}
+                        # docker push chucthien03/mern-stack-frontend:${timestamp}
                         docker push chucthien03/post-microservice:${timestamp}
                     '''
                 }
+            }
+        }
+
+        stage('Update K8s Deployments') {
+            steps {
+                echo 'Updating Kubernetes deployments with new image versions...'
+                sh '''
+                    kubectl set image deployment/gateway-deployment gateway-container=chucthien03/gateway-service:${timestamp}
+                    kubectl set image deployment/auth-microservice-deployment auth-container=chucthien03/auth-microservice:${timestamp}
+                    kubectl set image deployment/comment-microservice-deployment comment-container=chucthien03/comment-service:${timestamp}
+                    # kubectl set image deployment/frontend-deployment frontend-container=chucthien03/mern-stack-frontend:${timestamp}
+                    kubectl set image deployment/post-microservice-deployment post-container=chucthien03/post-microservice:${timestamp}
+                '''
             }
         }
 
@@ -63,14 +73,12 @@ pipeline {
                     docker rmi chucthien03/gateway-service:${timestamp} || true
                     docker rmi chucthien03/auth-microservice:${timestamp} || true
                     docker rmi chucthien03/comment-service:${timestamp} || true
-                    #docker rmi chucthien03/mern-stack-frontend:${timestamp} || true
+                    # docker rmi chucthien03/mern-stack-frontend:${timestamp} || true
                     docker rmi chucthien03/post-microservice:${timestamp} || true
                     docker image prune -af
                 '''
             }
         }
-
-        
     }
 
     post {
@@ -84,7 +92,6 @@ pipeline {
                      to: 'tranchucthienmt@gmail.com',
                      subject: "Pipeline Success: ${currentBuild.fullDisplayName}",
                      body: "Pipeline completed successfully. Find attached Trivy report."
-                     
         }
         failure {
             echo 'Deployment to Dev Environment failed!'
@@ -92,7 +99,6 @@ pipeline {
                      to: 'tranchucthienmt@gmail.com',
                      subject: "Pipeline Failure: ${currentBuild.fullDisplayName}",
                      body: "Pipeline failed. Please check the logs for details."
-                     
         }
         unstable {
             echo 'Deployment to Dev Environment is unstable!'
