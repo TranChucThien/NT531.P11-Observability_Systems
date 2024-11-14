@@ -1,0 +1,45 @@
+
+name: K8s Deployment
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy_terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: us-east-1
+          
+
+
+
+      - name: Connect to EKS cluster
+        run: |
+          aws eks update-kubeconfig --region us-east-1 --name production-environment
+          kubectl get nodes -o wide
+        working-directory: ./infra/
+
+      - name: Apply yaml file
+        run: | 
+          kubectl apply -f secret-config/api-configmap.yaml
+          kubectl apply -f secret-config/database-secret.yaml
+          kubectl apply -f microservices/auth-service-deploy.yaml
+          kubectl apply -f microservices/comment-service-deploy.yaml
+          kubectl apply -f microservices/frontend-deploy.yaml
+          kubectl apply -f microservices/gateway-deploy.yaml
+          kubectl apply -f microservices/post-service-deploy.yaml
+        working-directory: ./infra/
+
+
+ 
+  
