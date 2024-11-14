@@ -30,6 +30,14 @@ pipeline {
             }
         }
 
+        stage('Build Post Service Image') {
+            steps {
+                sh '''
+                    docker build ./post_service --file ./post_service/Dockerfile --tag chucthien03/post-microservice:${timestamp}
+                '''
+            }
+        }
+
         stage('Build Comment Service Image') {
             steps {
                 sh '''
@@ -46,13 +54,7 @@ pipeline {
             }
         }
 
-        stage('Build Post Service Image') {
-            steps {
-                sh '''
-                    docker build ./post_service --file ./post_service/Dockerfile --tag chucthien03/post-microservice:${timestamp}
-                '''
-            }
-        }
+        
 
         stage('Scan Images with Trivy') {
             steps {
