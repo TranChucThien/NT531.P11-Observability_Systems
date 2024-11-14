@@ -14,19 +14,47 @@ pipeline {
             }
         }
 
-        stage('Build image') {
+        stage('Build Gateway Service Image') {
             steps {
                 sh '''
-                docker build  ./api_gateway --file ./api_gateway/Dockerfile --tag chucthien03/gateway-service:${timestamp}
-                docker build  ./auth_service --file ./auth_service/Dockerfile --tag chucthien03/auth-microservice:${timestamp}
-                docker build  ./comment_service --file ./comment_service/Dockerfile --tag chucthien03/comment-service:${timestamp}
-                docker build  ./frontend --file ./frontend/Dockerfile --tag chucthien03/mern-stack-frontend:${timestamp}
-                docker build  ./post_service --file ./post_service/Dockerfile --tag chucthien03/post-microservice:${timestamp}
+                    docker build ./api_gateway --file ./api_gateway/Dockerfile --tag chucthien03/gateway-service:${timestamp}
                 '''
             }
         }
 
-        stage('Scan images with Trivy') {
+        stage('Build Auth Service Image') {
+            steps {
+                sh '''
+                    docker build ./auth_service --file ./auth_service/Dockerfile --tag chucthien03/auth-microservice:${timestamp}
+                '''
+            }
+        }
+
+        stage('Build Comment Service Image') {
+            steps {
+                sh '''
+                    docker build ./comment_service --file ./comment_service/Dockerfile --tag chucthien03/comment-service:${timestamp}
+                '''
+            }
+        }
+
+        stage('Build Frontend Image') {
+            steps {
+                sh '''
+                    docker build ./frontend --file ./frontend/Dockerfile --tag chucthien03/mern-stack-frontend:${timestamp}
+                '''
+            }
+        }
+
+        stage('Build Post Service Image') {
+            steps {
+                sh '''
+                    docker build ./post_service --file ./post_service/Dockerfile --tag chucthien03/post-microservice:${timestamp}
+                '''
+            }
+        }
+
+        stage('Scan Images with Trivy') {
             steps {
                 sh '''
                     # Ensure the file exists and is writable
@@ -46,7 +74,7 @@ pipeline {
             }
         }
 
-        stage('Push images to Docker Hub') {
+        stage('Push Images to Docker Hub') {
             steps {
                 withDockerRegistry(credentialsId: 'dockerhub-account', url: 'https://index.docker.io/v1/') {
                     echo 'Pushing images to Docker Hub...'
@@ -61,7 +89,7 @@ pipeline {
             }
         }
 
-        stage('Clean up Docker images') {
+        stage('Clean Up Docker Images') {
             steps {
                 echo 'Removing local Docker images...'
                 sh '''
