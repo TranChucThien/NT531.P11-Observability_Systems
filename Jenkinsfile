@@ -74,9 +74,9 @@ pipeline {
                 sh '''
                     whoami
                     kubectl set image deployment/gateway-deployment gateway-c=chucthien03/gateway-service:${timestamp}
-                   # kubectl set image deployment/auth-microservice-deployment auth-microservice-c=chucthien03/auth-microservice:${timestamp}
-                    #kubectl set image deployment/comment-microservice-deployment comment-microservice-c=chucthien03/comment-service:${timestamp}
-                    kubectl set image deployment/frontend-deployment frontend-c=chucthien03/mern-stack-frontend:${timestamp}
+                    kubectl set image deployment/auth-microservice-deployment auth-microservice-c=chucthien03/auth-microservice:${timestamp}
+                    kubectl set image deployment/comment-microservice-deployment comment-microservice-c=chucthien03/comment-service:${timestamp}
+                    #kubectl set image deployment/frontend-deployment frontend-c=chucthien03/mern-stack-frontend:${timestamp}
                     kubectl set image deployment/post-microservice-deployment post-microservice-c=chucthien03/post-microservice:${timestamp}
                     
                     
