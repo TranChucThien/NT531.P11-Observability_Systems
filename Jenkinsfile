@@ -77,7 +77,7 @@ pipeline {
                         docker push chucthien03/gateway-service:${timestamp}
                         docker push chucthien03/auth-microservice:${timestamp}
                         docker push chucthien03/comment-service:${timestamp}
-                        docker push chucthien03/mern-stack-frontend:${timestamp}
+                        #docker push chucthien03/mern-stack-frontend:${timestamp}
                         docker push chucthien03/post-microservice:${timestamp}
                     '''
                 }
@@ -91,7 +91,7 @@ pipeline {
                     docker rmi chucthien03/gateway-service:${timestamp} || true
                     docker rmi chucthien03/auth-microservice:${timestamp} || true
                     docker rmi chucthien03/comment-service:${timestamp} || true
-                    docker rmi chucthien03/mern-stack-frontend:${timestamp} || true
+                    #docker rmi chucthien03/mern-stack-frontend:${timestamp} || true
                     docker rmi chucthien03/post-microservice:${timestamp} || true
                 '''
             }
