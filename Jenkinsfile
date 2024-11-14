@@ -93,6 +93,7 @@ pipeline {
                     docker rmi chucthien03/comment-service:${timestamp} || true
                     #docker rmi chucthien03/mern-stack-frontend:${timestamp} || true
                     docker rmi chucthien03/post-microservice:${timestamp} || true
+                    docker image prune -af
                 '''
             }
         }
