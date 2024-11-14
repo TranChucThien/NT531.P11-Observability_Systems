@@ -1,4 +1,4 @@
-name: K8s Deployment
+name: K8s Check
 
 on:
   workflow_dispatch:
