@@ -19,7 +19,7 @@ locals {
   prod_cluster_name = "production-environment"
   prod_node_group_name = "production-nodes"
   vpc_id = var.vpc_id
-  subnet_ids = ["subnet-09f008b76583d8cae", "subnet-0221a26c2daacbdd7", "subnet-0db67585071973542"]
+  subnet_ids = ["subnet-03609e1568ecf1b2a"]
   iam_role_arn = var.iam_role_arn
 }
 
