@@ -17,6 +17,7 @@ pipeline {
         stage('Build Images') {
             steps {
                 sh '''
+                    whoami
                     docker build ./api_gateway --file ./api_gateway/Dockerfile --tag chucthien03/gateway-service:${timestamp}
                     docker build ./auth_service --file ./auth_service/Dockerfile --tag chucthien03/auth-microservice:${timestamp}
                     docker build ./post_service --file ./post_service/Dockerfile --tag chucthien03/post-microservice:${timestamp}
