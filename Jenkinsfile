@@ -17,16 +17,14 @@ pipeline {
         stage('Build image') {
             steps {
                 sh '''
-                docker build --no-cache ./api_gateway --file ./api_gateway/Dockerfile --tag chucthien03/gateway-service:${timestamp}
-                docker build --no-cache ./auth_service --file ./auth_service/Dockerfile --tag chucthien03/auth-microservice:${timestamp}
-                docker build --no-cache ./comment_service --file ./comment_service/Dockerfile --tag chucthien03/comment-service:${timestamp}
-                docker build --no-cache ./frontend --file ./frontend/Dockerfile --tag chucthien03/mern-stack-frontend:${timestamp}
-                docker build --no-cache ./post_service --file ./post_service/Dockerfile --tag chucthien03/post-microservice:${timestamp}
+                docker build  ./api_gateway --file ./api_gateway/Dockerfile --tag chucthien03/gateway-service:${timestamp}
+                docker build  ./auth_service --file ./auth_service/Dockerfile --tag chucthien03/auth-microservice:${timestamp}
+                docker build  ./comment_service --file ./comment_service/Dockerfile --tag chucthien03/comment-service:${timestamp}
+                docker build  ./frontend --file ./frontend/Dockerfile --tag chucthien03/mern-stack-frontend:${timestamp}
+                docker build  ./post_service --file ./post_service/Dockerfile --tag chucthien03/post-microservice:${timestamp}
                 '''
             }
-}
-
-
+        }
 
         stage('Scan images with Trivy') {
             steps {
@@ -63,7 +61,18 @@ pipeline {
             }
         }
 
-    
+        stage('Clean up Docker images') {
+            steps {
+                echo 'Removing local Docker images...'
+                sh '''
+                    docker rmi chucthien03/gateway-service:${timestamp} || true
+                    docker rmi chucthien03/auth-microservice:${timestamp} || true
+                    docker rmi chucthien03/comment-service:${timestamp} || true
+                    docker rmi chucthien03/mern-stack-frontend:${timestamp} || true
+                    docker rmi chucthien03/post-microservice:${timestamp} || true
+                '''
+            }
+        }
     }
 
     post {
