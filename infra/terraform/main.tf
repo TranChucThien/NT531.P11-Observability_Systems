@@ -92,7 +92,7 @@ resource "aws_instance" "ec2_splunk" {
   instance_type = "t2.small"
   key_name = "public-ec2-key"
 
-  subnet_id = "subnet-09f008b76583d8cae"
+  subnet_id = "subnet-03609e1568ecf1b2a"
   vpc_security_group_ids = [ "sg-0d681723d5517857d" ]
   tags = {
     Name = "Splunk Server"
