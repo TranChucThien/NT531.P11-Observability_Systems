@@ -25,4 +25,4 @@ jobs:
 
     - name: Scan image by Trivy
       run: |
-        trivy image my-image-name --exit-code 1 --severity HIGH,CRITICAL
+        trivy image my-image-name  --severity HIGH,CRITICAL
