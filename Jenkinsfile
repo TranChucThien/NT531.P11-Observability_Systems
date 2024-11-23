@@ -7,17 +7,7 @@ pipeline {
 
     stages {
 
-        stage('Check Environment') {
-            steps {
-                script {
-                    sh '''
-                    echo "Checking PATH..."
-                    echo $PATH
-                    which sonar-scanner
-                    '''
-                }
-            }
-        }
+        
         
         stage('SonarQube Scan') {
             steps {
