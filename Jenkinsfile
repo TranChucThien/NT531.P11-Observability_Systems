@@ -10,24 +10,31 @@ pipeline {
         
         
         stage('SonarQube Scan') {
-            steps {
-                script {
-                    sh '''
-                    whoami
-                   
-                    /home/jenkins-vm/Downloads/sonar-scanner/bin/sonar-scanner --version
-                    pwd
-
+                    steps {
+                        script {
+                            // This block securely injects the credential into the environment
+                            withCredentials([string(credentialsId: 'sonar_key', variable: 'SONAR_TOKEN')]) {
+                                sh '''
+                                echo "Executing as user:"
+                                whoami
         
-                    # Execute the SonarScanner from the ~/Downloads directory
-                    /home/jenkins-vm/Downloads/sonar-scanner/bin/sonar-scanner \
-                        -Dsonar.projectKey=thien-org_lab2 \
-                        -Dsonar.organization=thien-org \
-                        -Dsonar.sources=./lab2 \
-                        -Dsonar.host.url=https://sonarcloud.io
-                    '''
-                }
-            }
+                                echo "SonarScanner version:"
+                                /home/jenkins-vm/Downloads/sonar-scanner/bin/sonar-scanner --version
+        
+                                echo "Current working directory:"
+                                pwd
+        
+                                echo "Starting SonarScanner:"
+                                /home/jenkins-vm/Downloads/sonar-scanner/bin/sonar-scanner \
+                                    -Dsonar.projectKey=thien-org_lab2 \
+                                    -Dsonar.organization=thien-org \
+                                    -Dsonar.sources=./lab2 \
+                                    -Dsonar.host.url=https://sonarcloud.io \
+                                    -Dsonar.login=$SONAR_TOKEN
+                                '''
+                            }
+                        }
+                    }
         }
 
 
