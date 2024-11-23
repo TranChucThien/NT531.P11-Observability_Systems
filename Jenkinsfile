@@ -18,7 +18,7 @@ pipeline {
                     cp -r lab2@2 /home/jenkins-vm/Downloads/lab2
         
                     # Change directory to ~/Downloads
-                    cd /home/jenkins-vm/Downloads/Downloads/lab2
+                    cd /home/jenkins-vm/Downloads/lab2
         
                     # Print the current working directory
                     pwd
