@@ -14,6 +14,8 @@ pipeline {
                     sh '''
                     echo 'export PATH=$PATH:~/Downloads/sonar-scanner/bin' >> ~/.bashrc
                     source ~/.bashrc
+                    sonar-scanner --version
+                    pwd
 
         
                     # Execute the SonarScanner from the ~/Downloads directory
