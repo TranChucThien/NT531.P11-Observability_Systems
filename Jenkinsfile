@@ -11,6 +11,7 @@ pipeline {
         stage('SonarQube Scan') {
             steps {
                 script {
+                    pwd
                     sh '~/sonar-scanner/bin/sonar-scanner \
                         -Dsonar.projectKey=thien-org_lab2 \
                         -Dsonar.organization=thien-org \
