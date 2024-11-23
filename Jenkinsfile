@@ -12,19 +12,12 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    cd ..
-                    # Move the lab2 directory to ~/Downloads
-                
-                    cp -r lab2@2 /home/jenkins-vm/Downloads/lab2
-        
-                    # Change directory to ~/Downloads
-                    cd /home/jenkins-vm/Downloads/lab2
-        
-                    # Print the current working directory
-                    pwd
+                    echo 'export PATH=$PATH:~/Downloads/sonar-scanner/bin' >> ~/.bashrc
+                    source ~/.bashrc
+
         
                     # Execute the SonarScanner from the ~/Downloads directory
-                    /home/jenkins-vm/Downloads/sonar-scanner/bin/sonar-scanner \
+                    sonar-scanner/bin/sonar-scanner \
                         -Dsonar.projectKey=thien-org_lab2 \
                         -Dsonar.organization=thien-org \
                         -Dsonar.sources=./lab2 \
