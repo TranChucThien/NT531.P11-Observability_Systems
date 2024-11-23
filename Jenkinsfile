@@ -15,7 +15,7 @@ pipeline {
                     cd ..
                     # Move the lab2 directory to ~/Downloads
                 
-                    cp lab2@2 ~/Downloads/lab2
+                    cp -r lab2@2 ~/Downloads/lab2
         
                     # Change directory to ~/Downloads
                     cd ~/Downloads/lab2
