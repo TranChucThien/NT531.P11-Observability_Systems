@@ -90,7 +90,7 @@ pipeline {
             steps {
                 echo 'Updating Kubernetes deployments with new image versions...'
                 sh '''
-                   kubectl get deployments -o custom-columns="DEPLOYMENT NAME:.metadata.name,IMAGE:.spec.template.spec.containers[*].image"
+                   #kubectl get deployments -o custom-columns="DEPLOYMENT NAME:.metadata.name,IMAGE:.spec.template.spec.containers[*].image"
                     
 
                 '''
