@@ -25,12 +25,12 @@ pipeline {
                     sh '''
                     whoami
                    
-                    sonar-scanner --version
+                    /home/jenkins-vm/Downloads/sonar-scanner/bin/sonar-scanner --version
                     pwd
 
         
                     # Execute the SonarScanner from the ~/Downloads directory
-                    sonar-scanner/bin/sonar-scanner \
+                    /home/jenkins-vm/Downloads/sonar-scanner/bin/sonar-scanner/bin/sonar-scanner \
                         -Dsonar.projectKey=thien-org_lab2 \
                         -Dsonar.organization=thien-org \
                         -Dsonar.sources=./lab2 \
