@@ -12,11 +12,13 @@ pipeline {
             steps {
                 script {
                     sh '''
+                    cd ..
                     # Move the lab2 directory to ~/Downloads
-                    mv /var/lib/jenkins/workspace/lab2 ~/Downloads/
+                
+                    cp lab2@2 ~/Downloads/lab2
         
                     # Change directory to ~/Downloads
-                    cd ~/Downloads
+                    cd ~/Downloads/lab2
         
                     # Print the current working directory
                     pwd
