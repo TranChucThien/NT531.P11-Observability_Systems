@@ -12,7 +12,7 @@ pipeline {
             steps {
                 script {
                     // Using the full path to the sonar-scanner
-                    sh '/opt/sonar-scanner-6.2.1.4610-linux-x64/bin/sonar-scanner \
+                    sh 'sonar-scanner \
                         -Dsonar.projectKey=thien-org_lab2 \
                         -Dsonar.organization=thien-org \
                         -Dsonar.sources=. \
