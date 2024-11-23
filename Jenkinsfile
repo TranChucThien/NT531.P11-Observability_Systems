@@ -11,12 +11,16 @@ pipeline {
         stage('SonarQube Scan') {
             steps {
                 script {
+                    sh '''
+                    # Print the current working directory
                     pwd
-                    sh '~/sonar-scanner/bin/sonar-scanner \
+                    # Execute the SonarScanner from the specified directory
+                    ~/sonar-scanner/bin/sonar-scanner \
                         -Dsonar.projectKey=thien-org_lab2 \
                         -Dsonar.organization=thien-org \
                         -Dsonar.sources=. \
-                        -Dsonar.host.url=https://sonarcloud.io'
+                        -Dsonar.host.url=https://sonarcloud.io
+                    '''
                 }
             }
         }
