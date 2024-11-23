@@ -12,18 +12,26 @@ pipeline {
             steps {
                 script {
                     sh '''
+                    # Move the lab2 directory to ~/Downloads
+                    mv /var/lib/jenkins/workspace/lab2 ~/Downloads/
+        
+                    # Change directory to ~/Downloads
+                    cd ~/Downloads
+        
                     # Print the current working directory
                     pwd
-                    # Execute the SonarScanner from the specified directory
-                    ~/sonar-scanner/bin/sonar-scanner \
+        
+                    # Execute the SonarScanner from the ~/Downloads directory
+                    sonar-scanner \
                         -Dsonar.projectKey=thien-org_lab2 \
                         -Dsonar.organization=thien-org \
-                        -Dsonar.sources=. \
+                        -Dsonar.sources=./lab2 \
                         -Dsonar.host.url=https://sonarcloud.io
                     '''
                 }
             }
         }
+
 
         
         stage('Build Images') {
