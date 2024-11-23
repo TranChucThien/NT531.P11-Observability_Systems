@@ -7,17 +7,16 @@ pipeline {
 
     stages {
         
+    stages {
         stage('SonarQube Scan') {
             steps {
                 script {
-                    // Assuming sonar-scanner is already installed and in PATH
-                    sh '''
-                        sonar-scanner \
-                          -Dsonar.projectKey=thien-org_lab2 \
-                          -Dsonar.organization=thien-org \
-                          -Dsonar.sources=. \
-                          -Dsonar.host.url=https://sonarcloud.io
-                    '''
+                    // Using the full path to the sonar-scanner
+                    sh '/opt/sonar-scanner-6.2.1.4610-linux-x64/bin/sonar-scanner \
+                        -Dsonar.projectKey=thien-org_lab2 \
+                        -Dsonar.organization=thien-org \
+                        -Dsonar.sources=. \
+                        -Dsonar.host.url=https://sonarcloud.io'
                 }
             }
         }
