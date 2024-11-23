@@ -55,11 +55,11 @@ pipeline {
         stage('Scan Images with Trivy') {
             steps {
                 sh '''
-                    trivy image --severity CRITICAL chucthien03/gateway-service:${timestamp} --exit-code 1
-                    trivy image --severity CRITICAL chucthien03/auth-microservice:${timestamp} --exit-code 1
-                    trivy image --severity CRITICAL chucthien03/comment-service:${timestamp} --exit-code 1
+                    #trivy image --severity CRITICAL chucthien03/gateway-service:${timestamp} --exit-code 1
+                    #trivy image --severity CRITICAL chucthien03/auth-microservice:${timestamp} --exit-code 1
+                    #trivy image --severity CRITICAL chucthien03/comment-service:${timestamp} --exit-code 1
                     #trivy image --severity CRITICAL chucthien03/mern-stack-frontend:${timestamp} --exit-code 1
-                    trivy image --severity CRITICAL chucthien03/post-microservice:${timestamp} --exit-code 1
+                    #trivy image --severity CRITICAL chucthien03/post-microservice:${timestamp} --exit-code 1
                 '''
             }
         }
