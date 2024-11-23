@@ -12,6 +12,7 @@ pipeline {
             steps {
                 script {
                     sh '''
+                    whoami
                     echo 'export PATH=$PATH:~/Downloads/sonar-scanner/bin' >> ~/.bashrc
                     source ~/.bashrc
                     sonar-scanner --version
