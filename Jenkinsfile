@@ -28,7 +28,7 @@ pipeline {
                                 /home/jenkins-vm/Downloads/sonar-scanner/bin/sonar-scanner \
                                     -Dsonar.projectKey=thien-org_lab2 \
                                     -Dsonar.organization=thien-org \
-                                    -Dsonar.sources=./lab2 \
+                                    -Dsonar.sources=./ \
                                     -Dsonar.host.url=https://sonarcloud.io \
                                     -Dsonar.login=$SONAR_TOKEN
                                 '''
