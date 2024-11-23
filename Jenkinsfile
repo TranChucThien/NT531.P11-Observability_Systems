@@ -6,14 +6,23 @@ pipeline {
     }
 
     stages {
-        stage('Authenticate with Docker Hub') {
+        
+        stage('SonarQube Scan') {
             steps {
-                withDockerRegistry(credentialsId: 'dockerhub-account', url: 'https://index.docker.io/v1/') {
-                    echo 'Logged in to Docker Hub'
+                script {
+                    // Assuming sonar-scanner is already installed and in PATH
+                    sh '''
+                        sonar-scanner \
+                          -Dsonar.projectKey=thien-org_lab2 \
+                          -Dsonar.organization=thien-org \
+                          -Dsonar.sources=. \
+                          -Dsonar.host.url=https://sonarcloud.io
+                    '''
                 }
             }
         }
 
+        
         stage('Build Images') {
             steps {
                 sh '''
@@ -38,7 +47,14 @@ pipeline {
                 '''
             }
         }
-
+        
+        stage('Authenticate with Docker Hub') {
+            steps {
+                withDockerRegistry(credentialsId: 'dockerhub-account', url: 'https://index.docker.io/v1/') {
+                    echo 'Logged in to Docker Hub'
+                }
+            }
+        }
         stage('Push Images to Docker Hub') {
             steps {
                 withDockerRegistry(credentialsId: 'dockerhub-account', url: 'https://index.docker.io/v1/') {
