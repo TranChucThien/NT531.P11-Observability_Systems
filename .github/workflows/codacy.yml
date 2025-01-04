@@ -1,0 +1,31 @@
+name: Run Bash Scripts
+
+
+on:
+  workflow_dispatch: #
+
+jobs:
+  run-bash-scripts:
+    name: Setup Monitoring system
+    runs-on: self-hosted
+
+    steps:
+
+      # Step 2: Run a simple bash command
+      - name: Set up Prometheus
+        run: |
+          helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+          helm repo update
+          helm install prometheus prometheus-community/prometheus
+          kubectl expose service prometheus-server --type=NodePort --target-port=9090 --name=prometheus-server-ext
+          
+          
+
+      # Step 3: Run a bash script file from the repository
+      - name: Set up Grafana
+        run: |
+          helm repo add grafana https://grafana.github.io/helm-charts 
+          helm repo update
+          helm install grafana grafana/grafana
+          kubectl expose service grafana --type=NodePort --target-port=3000 --name=grafana-ext
+          
